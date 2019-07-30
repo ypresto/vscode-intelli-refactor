@@ -14,48 +14,57 @@ let extContext: vscode.ExtensionContext | null = null;
 export function activate(context: vscode.ExtensionContext) {
   for (const nearestCommand of nearestCommandTypes) {
     context.subscriptions.push(
-      vscode.commands.registerCommand(nearestCommand.command, () => nearestNodeAction(nearestCommand))
+      vscode.commands.registerCommand(
+        nearestCommand.command,
+        preHandler(nearestCommand, editor => nearestNodeAction(editor, nearestCommand))
+      )
     );
   }
   for (const expressionCommand of expressionCommandTypes) {
     context.subscriptions.push(
-      vscode.commands.registerCommand(expressionCommand.command, () => expressionAwareAction(expressionCommand))
+      vscode.commands.registerCommand(
+        expressionCommand.command,
+        preHandler(expressionCommand, editor => expressionAwareAction(editor, expressionCommand))
+      )
     );
   }
   extContext = context;
 }
 
-async function nearestNodeAction(commandType: CommandType) {
-  const editor = vscode.window.activeTextEditor;
-  if (!editor) return;
-  const { document, selection } = editor;
+const TS_JS_LANG_IDS = ['typescript', 'typescriptreact', 'javascript', 'javascriptreact'];
 
-  if (!selection.isEmpty) {
-    // Respect user selection.
-    return selectedRangeAction(editor, selection, commandType);
-  }
+function preHandler(commandType: CommandType, callback: (editor: vscode.TextEditor) => any) {
+  return () => {
+    const editor = vscode.window.activeTextEditor;
+    if (!editor) return;
+    const { document, selection } = editor;
 
-  const candidate = await vscode.window.withProgress(
-    { location: vscode.ProgressLocation.Window, title: 'Loading code actions' },
-    () => findNearestCandidateNode(document, selection, filterFromCommandType(commandType))
+    if (!TS_JS_LANG_IDS.includes(document.languageId)) {
+      // Path-through
+      return executeCodeActionCommand(editor, null, commandType);
+    }
+
+    if (!selection.isEmpty) {
+      // Respect user selection.
+      return selectedRangeAction(editor, commandType);
+    }
+
+    return callback(editor);
+  };
+}
+
+async function nearestNodeAction(editor: vscode.TextEditor, commandType: CommandType) {
+  const candidate = await withLoading(() =>
+    findNearestCandidateNode(editor.document, editor.selection, filterFromCommandType(commandType))
   );
 
   return executeCodeActionCommand(editor, candidate ? candidate.selection : null, commandType);
 }
 
-async function expressionAwareAction(commandType: CommandType) {
-  const editor = vscode.window.activeTextEditor;
-  if (!editor) return;
-  const { document, selection } = editor;
-
-  if (!selection.isEmpty) {
-    return selectedRangeAction(editor, selection, commandType);
-  }
-
+async function expressionAwareAction(editor: vscode.TextEditor, commandType: CommandType) {
   // TODO: Prioritize preferred action?
-  const candidates = await vscode.window.withProgress(
-    { location: vscode.ProgressLocation.Window, title: 'Loading code actions' },
-    () => fetchCandidateNodesForWholeExpression(document, selection, filterFromCommandType(commandType))
+  const candidates = await withLoading(() =>
+    fetchCandidateNodesForWholeExpression(editor.document, editor.selection, filterFromCommandType(commandType))
   );
 
   const callback = (candidate: CandidateNode) => executeCodeActionCommand(editor, candidate.selection, commandType);
@@ -68,11 +77,9 @@ async function expressionAwareAction(commandType: CommandType) {
 }
 
 // Respect user selection.
-async function selectedRangeAction(editor: vscode.TextEditor, selection: vscode.Selection, commandType: CommandType) {
-  const candidate = await findSingleCandidateNodeOnRange(
-    editor.document,
-    selection,
-    filterFromCommandType(commandType)
+async function selectedRangeAction(editor: vscode.TextEditor, commandType: CommandType) {
+  const candidate = await withLoading(() =>
+    findSingleCandidateNodeOnRange(editor.document, editor.selection, filterFromCommandType(commandType))
   );
   return executeCodeActionCommand(editor, candidate ? candidate.selection : null, commandType);
 }
@@ -105,6 +112,13 @@ function filterFromCommandType(commandType: CommandType): ActionFilter {
     kind: commandType.kind ? vscode.CodeActionKind.Empty.append(commandType.kind) : undefined,
     preferred: commandType.preferred
   };
+}
+
+function withLoading<T>(callback: () => Promise<T>) {
+  return vscode.window.withProgress<T>(
+    { location: vscode.ProgressLocation.Window, title: 'Loading Code Actions...' },
+    callback
+  );
 }
 
 export function deactivate() {
