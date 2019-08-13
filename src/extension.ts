@@ -64,7 +64,12 @@ async function nearestNodeAction(editor: vscode.TextEditor, commandType: Command
 async function expressionAwareAction(editor: vscode.TextEditor, commandType: CommandType) {
   // TODO: Prioritize preferred action?
   const candidates = await withLoading(() =>
-    fetchCandidateNodesForWholeExpression(editor.document, editor.selection, filterFromCommandType(commandType))
+    fetchCandidateNodesForWholeExpression(
+      editor.document,
+      editor.selection,
+      filterFromCommandType(commandType),
+      commandType.typeExpression
+    )
   );
 
   const callback = (candidate: CandidateNode) => executeCodeActionCommand(editor, candidate.selection, commandType);

@@ -55,11 +55,12 @@ const nodeFilterForExpression = (node: ts.Node, index: number) =>
 export async function fetchCandidateNodesForWholeExpression(
   document: vscode.TextDocument,
   range: vscode.Range,
-  filter?: ActionFilter
+  filter?: ActionFilter,
+  typeExpression?: boolean
 ): Promise<CandidateNode[]> {
   const sourceFile = getSourceFile(document);
   const nodePath = traverseForShortestNodePathContainsRange(sourceFile, range);
-  const expressionNodes = [...nodePath].reverse().filter(nodeFilterForExpression);
+  const expressionNodes = [...nodePath].reverse().filter(typeExpression ? ts.isTypeNode : nodeFilterForExpression);
   const candidateNodes = await Promise.all(
     expressionNodes.map(async node => {
       return await fetchCandidateNode(document.uri, node, sourceFile, filter);

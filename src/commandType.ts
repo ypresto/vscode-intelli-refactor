@@ -5,6 +5,7 @@ export interface CommandType {
   noPrompt?: boolean;
   key?: string;
   mac?: string;
+  typeExpression?: boolean;
 }
 
 // Keys are overriding VSCode default.
@@ -48,7 +49,8 @@ export const expressionCommandTypes: CommandType[] = [
     kind: 'refactor.extract.type',
     noPrompt: true,
     key: 'ctrl+shift+alt+a',
-    mac: 'cmd+shift+alt+a'
+    mac: 'cmd+shift+alt+a',
+    typeExpression: true
   },
   {
     command: 'intelli-refactor.inline',
