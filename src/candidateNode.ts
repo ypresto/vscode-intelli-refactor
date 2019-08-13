@@ -12,6 +12,9 @@ export interface ActionFilter {
   preferred?: boolean;
 }
 
+// 'object.receiver' node of 'object.receiver()'
+const isCallReceiverNode = (node: ts.Node) => ts.isCallExpression(node.parent) && node.parent.expression === node;
+
 const isExcludedForNearest = (node: ts.Node) =>
   // NOTE: Enable 'Move to New File' which is only available when whole declaration (const foo = ...) is selected.
   //
@@ -21,12 +24,7 @@ const isExcludedForNearest = (node: ts.Node) =>
   //   'const foo ...':    VariableStatemenet
   // VariableDeclaration has meaningful children (identifier = initializer), and VariableDeclarationList is a list of them.
   // So we can safely skip them to expand selction to parent VariableStatement.
-  //
-  // TODO: Skip only one Identifier in VariableStatement (otherwise Move to New File is impossible). Maybe option for it is better.
-  ts.isVariableDeclaration(node) ||
-  ts.isVariableDeclarationList(node) ||
-  // 'object.foobar()' over 'object.foobar'.
-  (ts.isCallExpression(node.parent) && node.parent.expression === node);
+  ts.isVariableDeclaration(node) || ts.isVariableDeclarationList(node) || isCallReceiverNode(node);
 
 export async function findNearestCandidateNode(
   document: vscode.TextDocument,
@@ -51,7 +49,7 @@ export async function findNearestCandidateNode(
 //     <div>...</div>
 //   )
 const nodeFilterForExpression = (node: ts.Node, index: number) =>
-  (index === 0 || !ts.isParenthesizedExpression(node)) && ts.isExpressionNode(node);
+  (index === 0 || !ts.isParenthesizedExpression(node)) && ts.isExpressionNode(node) && !isCallReceiverNode(node);
 
 export async function fetchCandidateNodesForWholeExpression(
   document: vscode.TextDocument,
