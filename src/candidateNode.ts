@@ -147,10 +147,10 @@ function getSourceFilePosition(position: vscode.Position, sourceFile: ts.SourceF
 }
 
 // NOTE: Actual parameter type is a range, but typescript refactoring checks rangeOrSelection instanceof vscode.Selection.
-// https://github.com/microsoft/vscode/blob/a7122371aaa76237b155cd38c57e9d66a5f47637/extensions/typescript-language-features/src/features/refactor.ts#L215
-// Current VSCode transform Select to Range, so there is no workaround for this.
-// https://github.com/microsoft/vscode/blob/1c6047158b540dd5e38e75bf9793bc9527d26e4b/src/vs/workbench/api/common/extHostApiCommands.ts#L486
-export async function fetchCodeActions(uri: vscode.Uri, selection: vscode.Selection, filter: ActionFilter) {
+// Old (< 1.38.0) VSCode transform Select to Range, so there is no workaround for this.
+// https://github.com/microsoft/vscode/issues/77997
+// Also isPreferred is always undefined in old (< 1.38.0) VSCode
+// https://github.com/microsoft/vscode/issues/78098
   const rawActions =
     (await vscode.commands.executeCommand<vscode.Command[]>(
       'vscode.executeCodeActionProvider',

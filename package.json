@@ -21,7 +21,7 @@
     "url": "https://github.com/ypresto/vscode-intelli-refactor/issues"
   },
   "engines": {
-    "vscode": "^1.36.0"
+    "vscode": "^1.38.0"
   },
   "categories": [
     "Other"
