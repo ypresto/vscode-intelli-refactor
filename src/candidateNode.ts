@@ -10,6 +10,7 @@ export interface CandidateNode {
 export interface ActionFilter {
   kind?: vscode.CodeActionKind;
   preferred?: boolean;
+  useCompatSelection?: boolean;
 }
 
 // 'object.receiver' node of 'object.receiver()'
@@ -151,6 +152,18 @@ function getSourceFilePosition(position: vscode.Position, sourceFile: ts.SourceF
 // https://github.com/microsoft/vscode/issues/77997
 // Also isPreferred is always undefined in old (< 1.38.0) VSCode
 // https://github.com/microsoft/vscode/issues/78098
+export async function fetchCodeActions(
+  uri: vscode.Uri,
+  selection: vscode.Selection,
+  filter: ActionFilter
+): Promise<vscode.Command[]> {
+  if (filter.useCompatSelection) {
+    // NOTE: Some extensions are referencing activeTextEditor.selection instead of argument.
+    const editor = vscode.window.activeTextEditor;
+    if (!editor) return [];
+    editor.selection = selection;
+  }
+
   const rawActions =
     (await vscode.commands.executeCommand<vscode.Command[]>(
       'vscode.executeCodeActionProvider',
@@ -158,6 +171,12 @@ function getSourceFilePosition(position: vscode.Position, sourceFile: ts.SourceF
       selection,
       filter.kind
     )) || [];
+
+  // reset selection
+  if (filter.useCompatSelection) {
+    await vscode.commands.executeCommand('cursorUndo');
+  }
+
   if (filter.preferred) {
     return rawActions.filter(action => action instanceof vscode.CodeAction && action.isPreferred);
   } else {

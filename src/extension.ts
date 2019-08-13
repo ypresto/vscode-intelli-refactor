@@ -108,9 +108,11 @@ async function executeCodeActionCommand(
 }
 
 function filterFromCommandType(commandType: CommandType): ActionFilter {
+  const config = vscode.workspace.getConfiguration('intelli-refactor');
   return {
     kind: commandType.kind ? vscode.CodeActionKind.Empty.append(commandType.kind) : undefined,
-    preferred: commandType.preferred
+    preferred: commandType.preferred,
+    useCompatSelection: config.get('useCompatSelection', false)
   };
 }
 
