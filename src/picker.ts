@@ -14,7 +14,14 @@ export function showNodePicker({
   placeholder?: string;
   onAccept: (candidate: CandidateNode) => void;
 }): vscode.Disposable {
+  let accepted = false;
   const initialSelection = editor.selection;
+
+  const maybeSoftUndo = async () => {
+    if (!editor.selection.isEqual(initialSelection)) {
+      await vscode.commands.executeCommand('cursorUndo');
+    }
+  };
 
   const quickPick = vscode.window.createQuickPick<CandidatePickItem>();
   quickPick.placeholder = placeholder;
@@ -22,16 +29,21 @@ export function showNodePicker({
     ...candidate,
     label: candidateToLabel(candidate)
   }));
-  // TODO: Soft Undo selection?
-  quickPick.onDidChangeActive(item => (editor.selection = item[0] ? item[0].selection : initialSelection));
-  quickPick.onDidAccept(() => {
-    quickPick.dispose(); // Skip onDidHide
-    return onAccept(quickPick.activeItems[0]);
+  quickPick.onDidChangeActive(async item => {
+    await maybeSoftUndo();
+    editor.selection = item[0] ? item[0].selection : initialSelection;
   });
-  quickPick.onDidHide(() => {
+  quickPick.onDidAccept(() => {
+    accepted = true;
+    quickPick.dispose();
+    onAccept(quickPick.activeItems[0]);
+  });
+  quickPick.onDidHide(async () => {
+    if (accepted) return;
     // Cancel
-    editor.selection = initialSelection;
-    return quickPick.dispose();
+    console.log('onDidHide');
+    await maybeSoftUndo();
+    quickPick.dispose();
   });
   quickPick.show();
   return quickPick;
