@@ -77,7 +77,12 @@ async function expressionAwareAction(editor: vscode.TextEditor, commandType: Com
   if (candidates.length === 0) return executeCodeActionCommand(editor, null, commandType);
   if (candidates.length === 1) return callback(candidates[0]);
 
-  const picker = showNodePicker({ editor, candidates, onAccept: callback });
+  const picker = showNodePicker({
+    editor,
+    candidates,
+    placeholder: commandType.typeExpression ? 'Types' : 'Expressions',
+    onAccept: callback
+  });
   extContext!.subscriptions.push(picker);
 }
 
