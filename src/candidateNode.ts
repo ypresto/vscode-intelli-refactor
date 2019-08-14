@@ -22,9 +22,9 @@ const isExcludedForNearest = (node: ts.Node) =>
   // In 'const foo = 1, bar = 2',
   //   'foo = 1':          VariableDeclaration
   //   'foo = 1, bar = 2': VariableDeclarationList
-  //   'const foo ...':    VariableStatemenet
+  //   'const foo ...':    VariableStatement
   // VariableDeclaration has meaningful children (identifier = initializer), and VariableDeclarationList is a list of them.
-  // So we can safely skip them to expand selction to parent VariableStatement.
+  // So we can safely skip them to expand selection to parent VariableStatement.
   ts.isVariableDeclaration(node) || ts.isVariableDeclarationList(node) || isCallReceiverNode(node);
 
 export async function findNearestCandidateNode(
@@ -43,7 +43,7 @@ export async function findNearestCandidateNode(
   return null;
 }
 
-// NOTE: ParenthesizedExpresion itself is meaningless because it can contain only one Node.
+// NOTE: ParenthesizedExpression itself is meaningless because it can contain only one Node.
 // Respect it only when it is first (shortest) node in candidate.
 // Note that wrapping with meaningless parentheses is popular in React development.
 //   return (

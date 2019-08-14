@@ -48,7 +48,7 @@
         "intelli-refactor.useCompatSelection": {
           "type": "boolean",
           "default": false,
-          "description": "Enable this if you are using old refactor extension and geting unexpected \"No code actions available\" message after selection widened. See microsoft/vscode#49024 for detail. Selection will blink while loading actions."
+          "description": "Enable this if you are using old refactor extension and getting unexpected \"No code actions available\" message after selection widened. See microsoft/vscode#49024 for detail. Selection will blink while loading actions."
         }
       }
     },
