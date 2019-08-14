@@ -122,7 +122,7 @@
       },
       {
         "command": "intelli-refactor.refactor",
-        "key": "ctrl+shift+r",
+        "key": "ctrl+shift+alt+t",
         "when": "editorHasCodeActionsProvider && editorTextFocus && !editorReadonly"
       },
       {
