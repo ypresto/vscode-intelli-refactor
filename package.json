@@ -1,6 +1,6 @@
 {
   "name": "vscode-intelli-refactor",
-  "displayName": "vscode-intelli-refactor",
+  "displayName": "Intelli Refactor",
   "description": "Smartly select range for refactoring under cursor, like IntelliJ / Android Studio.",
   "version": "0.1.0",
   "publisher": "ypresto",
@@ -26,6 +26,7 @@
   "categories": [
     "Other"
   ],
+  "icon": "icon.png",
   "//activationEvents": "NOTE: Generated. Do not write by hand.",
   "activationEvents": [
     "onCommand:intelli-refactor.quickFix",
