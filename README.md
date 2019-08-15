@@ -1,6 +1,6 @@
 # vscode-intelli-refactor README
 
-Smartly select range for refactoring under cursor. Imports superb `Alt+Enter` experience of IntelliJ / Android Studio into VSCode. 🚀
+💡⚡️ Smartly select range for refactoring under cursor. Imports superb `Alt+Enter` experience of IntelliJ / Android Studio into VSCode! 🚀
 
 ## Features
 
@@ -41,3 +41,7 @@ Older versions have bug around retrieving code actions, which is fixed in [micro
 ## Known Issues
 
 Currently only TypeScript/JavaScript is supported.
+
+## Notices
+
+Icon is based on [vscode's lightbulb icon](https://github.com/microsoft/vscode/blob/2bceb25547ab539f565d68b6dfcef96e32da455f/src/vs/editor/contrib/codeAction/lightbulb-dark.svg).
