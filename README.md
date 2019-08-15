@@ -1,19 +1,19 @@
 # vscode-intelli-refactor README
 
-💡⚡️ Smartly select range for refactoring under cursor. Imports superb `Alt+Enter` experience of IntelliJ / Android Studio into VSCode! 🚀
+💡⚡️ Smartly select range for refactoring under the cursor. Imports great `Alt+Enter` experience of IntelliJ / Android Studio into VSCode! 🚀
 
 ## Features
 
 ### Nearest Quick Fix
 
-Automatically expands selection to the region where at least one code action is available, in contrast to `Command+.` (or `Ctrl+.` in Windows) does not show refactoring actions unless selecting a whole expression by hand.
+Automatically expands selection to the region where at least one code action is available, in contrast to `Command+.` (or `Ctrl+.` in Windows) which does not show refactoring actions until selecting a whole expression by hand.
 
 ![intelli-quickfix](https://user-images.githubusercontent.com/400558/63030530-702c7880-beed-11e9-9474-14fc97404eaa.gif)
 
-### Refactor Shortcuts, Expression Selector
+### Refactor Shortcuts & Expression Selector
 
 IntelliJ offers shortcut keys for individual refactor actions e.g. extract variable or function.
-Picker will be shown to select target Expression under cursor.
+Picker will be shown to select target expression under the cursor.
 
 ![intelli-extract](https://user-images.githubusercontent.com/400558/63030551-7589c300-beed-11e9-8ab4-e10c0182a7e0.gif)
 
@@ -31,7 +31,7 @@ Picker will be shown to select target Expression under cursor.
 
 ## Requirements
 
-Supported minimum VSCode version is `1.38` (including insider).
+Minimum supported VSCode version is `1.38` (including insider).
 Older versions have bug around retrieving code actions, which is fixed in [microsoft/vscode#77999](https://github.com/microsoft/vscode/pull/77999).
 
 ## Extension Settings
@@ -40,8 +40,8 @@ Older versions have bug around retrieving code actions, which is fixed in [micro
 
 ## Known Issues
 
-Currently only TypeScript/JavaScript is supported.
+Currently only supports TypeScript/JavaScript.
 
 ## Notices
 
-Icon is based on [vscode's lightbulb icon](https://github.com/microsoft/vscode/blob/2bceb25547ab539f565d68b6dfcef96e32da455f/src/vs/editor/contrib/codeAction/lightbulb-dark.svg).
+The icon is based on [vscode's lightbulb icon](https://github.com/microsoft/vscode/blob/2bceb25547ab539f565d68b6dfcef96e32da455f/src/vs/editor/contrib/codeAction/lightbulb-dark.svg).
