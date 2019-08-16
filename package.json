@@ -2,10 +2,11 @@
   "name": "vscode-intelli-refactor",
   "displayName": "Intelli Refactor",
   "description": "Smartly select range for refactoring under cursor, like IntelliJ / Android Studio.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "publisher": "ypresto",
   "license": "MIT",
   "keywords": [
+    "intelli-refactor",
     "IntelliJ",
     "Android Studio",
     "refactor",
@@ -119,8 +120,7 @@
     "keybindings": [
       {
         "command": "intelli-refactor.quickFix",
-        "key": "ctrl+.",
-        "mac": "cmd+.",
+        "key": "alt+enter",
         "when": "editorHasCodeActionsProvider && editorTextFocus && !editorReadonly"
       },
       {

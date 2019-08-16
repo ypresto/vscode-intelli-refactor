@@ -10,7 +10,7 @@ export interface CommandType {
 
 // Keys are overriding VSCode default.
 export const nearestCommandTypes: CommandType[] = [
-  { command: 'intelli-refactor.quickFix', kind: null, key: 'ctrl+.', mac: 'cmd+.' },
+  { command: 'intelli-refactor.quickFix', kind: null, key: 'alt+enter' },
   { command: 'intelli-refactor.refactor', kind: 'refactor', key: 'ctrl+shift+alt+t' },
   { command: 'intelli-refactor.move', kind: 'refactor.move', key: 'f6' },
   { command: 'intelli-refactor.rewrite', kind: 'refactor.rewrite' } // Provider is already implemented or not...???
