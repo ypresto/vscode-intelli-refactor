@@ -19,15 +19,15 @@ Picker will be shown to select target expression under the cursor.
 
 ## Default Keybindings
 
-| Win              | Mac                                      | Action                                      | Type       |
-| ---------------- | ---------------------------------------- | ------------------------------------------- | ---------- |
-| Alt+Enter        | Alt+Enter                                | Quick Fix                                   | Nearest    |
-| Ctrl+Shift+Alt+T | Ctrl+Shift+Alt+T<br>(Ctrl+T in IntelliJ) | Refactor This                               | Nearest    |
-| F6               | F6                                       | Move                                        | Nearest    |
-| Ctrl+Alt+V       | Command+Alt+V                            | Extract Local Variable                      | Expression |
-| Ctrl+Alt+C       | Command+Alt+C                            | Extract Constant (including Local Variable) | Expression |
-| Ctrl+Alt+M       | Command+Alt+M                            | Extract Method                              | Expression |
-| Ctrl+Shift+Alt+A | Command+Shift+Alt+A                      | Extract Type Alias                          | Expression |
+| Win              | Mac                                      | Action                                               | Type       |
+| ---------------- | ---------------------------------------- | ---------------------------------------------------- | ---------- |
+| Alt+Enter        | Alt+Enter                                | Quick Fix                                            | Nearest    |
+| Ctrl+Shift+Alt+T | Ctrl+Shift+Alt+T<br>(Ctrl+T in IntelliJ) | Refactor This                                        | Nearest    |
+| F6               | F6                                       | Move                                                 | Nearest    |
+| Ctrl+Alt+V       | Command+Alt+V                            | Extract Local Variable                               | Expression |
+| Ctrl+Alt+C       | Command+Alt+C                            | Extract Constant<br>(including Local Variable)       | Expression |
+| Ctrl+Alt+M       | Command+Alt+M                            | Extract Function<br>(Extract **M**ethod in IntelliJ) | Expression |
+| Ctrl+Shift+Alt+A | Command+Shift+Alt+A                      | Extract Type Alias                                   | Expression |
 
 ## Requirements
 

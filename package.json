@@ -10,7 +10,9 @@
     "Android Studio",
     "refactor",
     "refactoring",
-    "extract"
+    "extract",
+    "quick fix",
+    "quickfix"
   ],
   "repository": {
     "type": "git",
