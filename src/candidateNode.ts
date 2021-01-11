@@ -170,7 +170,7 @@ export async function fetchCodeActions(
       'vscode.executeCodeActionProvider',
       uri,
       selection,
-      filter.kind
+      filter.kind?.value
     )) || [];
 
   // reset selection
